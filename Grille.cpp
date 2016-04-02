@@ -4,7 +4,7 @@
 
 
 
-bool Grille::getChecked(unsigned int x, unsigned int y)
+bool Grille::getChecked(unsigned int x, unsigned int y) const
 {
 	if(x < 0 || y < 0 || x >= width || y >= height) //En dehors des limites
 		return false;
@@ -13,7 +13,7 @@ bool Grille::getChecked(unsigned int x, unsigned int y)
 
 }
 
-bool Grille::getResult(unsigned int x, unsigned int y)
+bool Grille::getResult(unsigned int x, unsigned int y) const
 {
 	if(x < 0 || y < 0 || x >= width || y >= height) //En dehors des limites
 		return false;
@@ -21,7 +21,7 @@ bool Grille::getResult(unsigned int x, unsigned int y)
 	else return result[width*y+x];
 }
 
-bool Grille::checkDimensions()
+bool Grille::checkDimensions() const
 {
 	unsigned int n = width*height;
 	assert(n == result.size());
@@ -30,7 +30,7 @@ bool Grille::checkDimensions()
 	return true;
 }
 
-void Grille::synchroniserResult()
+void Grille::synchroniserResult() const
 {
 	assert(checkDimensions());
 
@@ -49,12 +49,42 @@ void Grille::synchroniserResult()
 
 }
 
+void Grille::draw(sf::RenderTarget &target, sf::RenderStates states) const
+{
+	synchroniserResult();
+
+	sf::CircleShape blanc(50); blanc.setFillColor(sf::Color(180, 180, 180));
+	sf::CircleShape noir(50); noir.setFillColor(sf::Color(20, 20, 20));
+	sf::CircleShape red(25); red.setFillColor(sf::Color::Red); red.move(25,25);	
+	
+	target.setView(sf::View(sf::FloatRect(0, 0, 100*width, 100*height)));
+	
+	for (unsigned int j = 0; j < height; ++j)
+	{
+		for (unsigned int i = 0; i < width; ++i)
+		{
+			sf::Transform trans;
+			trans.translate(100*i, 100*j);
+			sf::RenderStates pos(trans);
+			if(getResult(i,j))
+			target.draw(noir, pos);
+			else
+			target.draw(blanc, pos);
+
+			if(getChecked(i,j))
+			target.draw(red, pos);
+		}
+
+	}
+
+}	
 
 
 std::ostream& operator<<(std::ostream& os, const Grille& Grille)
 {
 	using std::endl;
 
+	Grille.synchroniserResult();
 
 	os << "Grille de dimension : " << Grille.width << 'x' << Grille.height << endl;
 	os << "Checked : " << endl;

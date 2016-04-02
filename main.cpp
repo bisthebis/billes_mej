@@ -13,20 +13,15 @@ int main()
 	settings.majorVersion = 4;
 	settings.minorVersion = 5;
 
-
 	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!", sf::Style::Default, settings);
-   	sf::CircleShape shape(100.f);
-   	shape.setFillColor(sf::Color::Blue);
-
 
 	///Grille
 	Grille grille(4,4);
 	grille.checked[1] = true;
 	grille.checked[7] = true;
 	grille.checked[8] = true;
-	grille.checked[14] = true;
+//	grille.checked[14] = true;
 
-	grille.synchroniserResult();
 
 	std::cout << grille;
 
@@ -39,8 +34,9 @@ int main()
 			window.close();
 		}
 
-	window.clear();
-	window.draw(shape);
+	window.clear(sf::Color(120,120,120));
+
+	window.draw(grille);
 	window.display();
 	}
 

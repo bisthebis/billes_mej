@@ -4,13 +4,13 @@
 
 #include <iostream>
 #include <vector>
+#include <SFML/Graphics.hpp>
 
-
-struct Grille
+struct Grille : public sf::Drawable
 {
 	unsigned int width, height;
 	std::vector<bool> checked;
-	std::vector<bool> result;
+	mutable std::vector<bool> result;
 
 	Grille(unsigned int w = 5, unsigned int h = 5) : width(w), height(h), checked(w*h, false), result(w*h, false) {}
 	~Grille(){}
@@ -23,12 +23,13 @@ struct Grille
 	// Invariant 2 : Pour tout i : 0 < i < width*height, result[i] correspond au XOR des checked alentours
 
 	private:
-	bool getChecked(unsigned int x, unsigned int y); //Accès type matriciel. Retourne false si en dehors des limites
-	bool getResult(unsigned int x, unsigned int y); //Accès type matriciel. Retourne false si en dehors des limites
-	bool checkDimensions();
-	
+	bool getChecked(unsigned int x, unsigned int y) const; //Accès type matriciel. Retourne false si en dehors des limites
+	bool getResult(unsigned int x, unsigned int y) const; //Accès type matriciel. Retourne false si en dehors des limites
+	bool checkDimensions() const;
+
+	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;	
 	public:
-	void synchroniserResult();
+	void synchroniserResult() const;
 
 
 };
