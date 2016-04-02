@@ -1,6 +1,9 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
+
+#include "Grille.h"
+
 int main()
 {
 	sf::ContextSettings settings;
