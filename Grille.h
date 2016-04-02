@@ -20,7 +20,7 @@ struct Grille : public sf::Drawable
 
 	/* Contrats : */
 	// Invariant 1 : checked.size() == result.size() == width*height
-	// Invariant 2 : Pour tout i : 0 < i < width*height, result[i] correspond au XOR des checked alentours
+	// Invariant 2 : Pour tout i : 0 < i < width*height, result[i] correspond au XOR des checked alentours si il faut représenter la grille ou la résoudre
 
 	private:
 	bool getChecked(unsigned int x, unsigned int y) const; //Accès type matriciel. Retourne false si en dehors des limites
@@ -32,6 +32,10 @@ struct Grille : public sf::Drawable
 	void synchroniserResult() const;
 
 
+	//Résolution
+	public:
+	void computeLine(unsigned int j);
+	void computeRange(unsigned int j, unsigned int n);
 };
 
 #endif

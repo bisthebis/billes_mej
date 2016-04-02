@@ -110,3 +110,19 @@ std::ostream& operator<<(std::ostream& os, const Grille& Grille)
 	}	
 
 }
+
+void Grille::computeLine(unsigned int j)
+{
+	for (unsigned int i = 0; i < width; ++i)
+	checked[i+height*j] = !getResult(i, j-1);
+
+	synchroniserResult();
+
+
+}
+
+void Grille::computeRange(unsigned int j, unsigned int n)
+{
+	for (unsigned int x = j; x < j+n; ++x)
+	computeLine(x);
+}

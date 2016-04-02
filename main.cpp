@@ -13,15 +13,16 @@ int main()
 	settings.majorVersion = 4;
 	settings.minorVersion = 5;
 
-	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!", sf::Style::Default, settings);
+	sf::RenderWindow window(sf::VideoMode(200, 200), "Math en Jeans", sf::Style::Default, settings);
 
 	///Grille
 	Grille grille(4,4);
 	grille.checked[1] = true;
-	grille.checked[7] = true;
-	grille.checked[8] = true;
+//	grille.checked[7] = true;
+//	grille.checked[8] = true;
 //	grille.checked[14] = true;
-
+	grille.synchroniserResult();
+	grille.computeRange(1,3);
 
 	std::cout << grille;
 
