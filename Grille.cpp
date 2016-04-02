@@ -34,6 +34,49 @@ void Grille::synchroniserResult()
 {
 	assert(checkDimensions());
 
-	unsigned int n = width*height;		
+	const unsigned int n = width*height;		
+	
+	for (unsigned int j = 0; j < height; ++j)
+	{
+		for (unsigned int i = 0; i < width; ++i)
+		{
+			const unsigned int x = i+j*width;
+			result[x] = getChecked(i,j) ^ getChecked(i-1,j) ^ getChecked(i+1,j) ^ getChecked(i,j-1) ^ getChecked(i, j+1);
+
+		}
+
+	}	
+
+}
+
+
+
+std::ostream& operator<<(std::ostream& os, const Grille& Grille)
+{
+	using std::endl;
+
+
+	os << "Grille de dimension : " << Grille.width << 'x' << Grille.height << endl;
+	os << "Checked : " << endl;
+	for (unsigned int j = 0; j < Grille.height; ++j)
+	{
+		for (unsigned int i = 0; i < Grille.width; ++i)
+		{
+			os << Grille.checked[i+j*Grille.width] << ' ';
+		}
+		os << endl;
+
+	}	
+
+	os << endl << "Result : " << endl;
+	for (unsigned int j = 0; j < Grille.height; ++j)
+	{
+		for (unsigned int i = 0; i < Grille.width; ++i)
+		{
+			os << Grille.result[i+j*Grille.width] << ' ';
+		}
+		os << endl;
+
+	}	
 
 }

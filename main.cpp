@@ -18,6 +18,18 @@ int main()
    	sf::CircleShape shape(100.f);
    	shape.setFillColor(sf::Color::Red);
 
+
+	///Grille
+	Grille grille(4,4);
+	grille.checked[1] = true;
+	grille.checked[7] = true;
+	grille.checked[8] = true;
+	grille.checked[14] = true;
+
+	grille.synchroniserResult();
+
+	std::cout << grille;
+
 	while (window.isOpen())
 	{
 		sf::Event event;

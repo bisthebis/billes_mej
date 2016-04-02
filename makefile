@@ -1,4 +1,4 @@
-OBJ = main.o
+OBJ = main.o Grille.o
 LIB = -lsfml-graphics -lsfml-window -lsfml-system -pthread
 CFLAGS = -Wall -Wextra -Werror -O2 -std=c++14
 CC = g++
