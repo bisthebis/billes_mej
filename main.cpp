@@ -1,11 +1,17 @@
 #include <iostream>
+#include <thread>
 #include <SFML/Graphics.hpp>
 
 
 #include "Grille.h"
+#include "easylogging++.h"
+
+INITIALIZE_EASYLOGGINGPP
 
 int main()
 {
+	LOG(INFO) << "Lancement";
+
 	sf::ContextSettings settings;
 	settings.depthBits = 24;
 	settings.stencilBits = 8;

@@ -4,7 +4,7 @@
 
 
 
-bool Grille::getChecked(unsigned int x, unsigned int y) const
+bool Grille::getChecked(int x, int y) const
 {
 	if(x < 0 || y < 0 || x >= width || y >= height) //En dehors des limites
 		return false;
@@ -13,9 +13,9 @@ bool Grille::getChecked(unsigned int x, unsigned int y) const
 
 }
 
-bool Grille::getResult(unsigned int x, unsigned int y) const
+bool Grille::getResult(int x, int y) const
 {
-	if(x < 0 || y < 0 || x >= width || y >= height) //En dehors des limites
+	if(x >= width || y >= height) //En dehors des limites
 		return false;
 
 	else return result[width*y+x];
@@ -34,34 +34,33 @@ void Grille::synchroniserResult() const
 {
 	assert(checkDimensions());
 
-	const unsigned int n = width*height;		
-	
-	for (unsigned int j = 0; j < height; ++j)
+	for (int j = 0; j < height; ++j)
 	{
-		for (unsigned int i = 0; i < width; ++i)
+		for (int i = 0; i < width; ++i)
 		{
 			const unsigned int x = i+j*width;
 			result[x] = getChecked(i,j) ^ getChecked(i-1,j) ^ getChecked(i+1,j) ^ getChecked(i,j-1) ^ getChecked(i, j+1);
 
 		}
 
-	}	
+	}
 
 }
 
 void Grille::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
 	synchroniserResult();
+	assert(!states.texture); //Pour éviter -Wunused
 
 	sf::CircleShape blanc(50); blanc.setFillColor(sf::Color(180, 180, 180));
 	sf::CircleShape noir(50); noir.setFillColor(sf::Color(20, 20, 20));
-	sf::CircleShape red(25); red.setFillColor(sf::Color::Red); red.move(25,25);	
-	
+	sf::CircleShape red(25); red.setFillColor(sf::Color::Red); red.move(25,25);
+
 	target.setView(sf::View(sf::FloatRect(0, 0, 100*width, 100*height)));
-	
-	for (unsigned int j = 0; j < height; ++j)
+
+	for (int j = 0; j < height; ++j)
 	{
-		for (unsigned int i = 0; i < width; ++i)
+		for (int i = 0; i < width; ++i)
 		{
 			sf::Transform trans;
 			trans.translate(100*i, 100*j);
@@ -77,7 +76,7 @@ void Grille::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
 	}
 
-}	
+}
 
 
 std::ostream& operator<<(std::ostream& os, const Grille& Grille)
@@ -88,32 +87,33 @@ std::ostream& operator<<(std::ostream& os, const Grille& Grille)
 
 	os << "Grille de dimension : " << Grille.width << 'x' << Grille.height << endl;
 	os << "Checked : " << endl;
-	for (unsigned int j = 0; j < Grille.height; ++j)
+	for (int j = 0; j < Grille.height; ++j)
 	{
-		for (unsigned int i = 0; i < Grille.width; ++i)
+		for (int i = 0; i < Grille.width; ++i)
 		{
 			os << Grille.checked[i+j*Grille.width] << ' ';
 		}
 		os << endl;
 
-	}	
+	}
 
 	os << endl << "Result : " << endl;
-	for (unsigned int j = 0; j < Grille.height; ++j)
+	for (int j = 0; j < Grille.height; ++j)
 	{
-		for (unsigned int i = 0; i < Grille.width; ++i)
+		for (int i = 0; i < Grille.width; ++i)
 		{
 			os << Grille.result[i+j*Grille.width] << ' ';
 		}
 		os << endl;
 
-	}	
+	}
 
+	return os;
 }
 
-void Grille::computeLine(unsigned int j)
+void Grille::computeLine(int j)
 {
-	for (unsigned int i = 0; i < width; ++i)
+	for (int i = 0; i < width; ++i)
 	checked[i+height*j] = !getResult(i, j-1);
 
 	synchroniserResult();
@@ -121,8 +121,8 @@ void Grille::computeLine(unsigned int j)
 
 }
 
-void Grille::computeRange(unsigned int j, unsigned int n)
+void Grille::computeRange(int j, int n)
 {
-	for (unsigned int x = j; x < j+n; ++x)
+	for (int x = j; x < j+n; ++x)
 	computeLine(x);
 }

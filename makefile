@@ -8,7 +8,7 @@ $(TARGET): $(OBJ)
 	$(CC) -o $(TARGET) $(OBJ) $(LIB) $(CFLAGS)
 
 %.o: %.cpp
-	$(CC) -c $<
+	$(CC) -c $< $(CFLAGS)
 
 
 clean:
