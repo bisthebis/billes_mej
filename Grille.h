@@ -30,12 +30,16 @@ struct Grille : public sf::Drawable
 	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 	public:
 	void synchroniserResult() const;
+	int getW() {return width;}
+	int getH() {return height;}
+	void move(int x, int y) {checked[x+y*width] = !checked[x+y*width]; synchroniserResult();}
 
 
 	//Résolution
 	public:
 	void computeLine(int j);
 	void computeRange(int j, int n);
+	void resize(int x, int y);
 };
 
 #endif

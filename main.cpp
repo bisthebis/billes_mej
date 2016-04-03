@@ -30,16 +30,13 @@ int main()
 	///Grille
 	Grille grille(4,4);
 	grille.checked[1] = true;
-//	grille.checked[7] = true;
-//	grille.checked[8] = true;
-//	grille.checked[14] = true;
 	grille.synchroniserResult();
-	grille.computeRange(1,3);
+
 
 	std::cout << grille;
 	window.setActive(false);
 
-	std::thread gfx(runGraphicThread, grille, std::ref(window));
+	std::thread gfx(runGraphicThread, std::ref(grille), std::ref(window));
 
 
 	//Commands
@@ -53,6 +50,27 @@ int main()
 			cin >> command;
 			if (command == "quit" || command == "q" || command== "leave" || command == "l")
 				stopApp = true;
+			else if (command == "resize")
+			{
+				int x, y;
+				cout << "Entrez les dimensions : " << endl;
+				cin >> x >> y;
+				grille.resize(x, y);
+			}
+			else if (command == "show")
+			{
+				cout << grille;
+			}
+			else if (command == "complete")
+			{
+				grille.computeRange(1,grille.getH()-1);
+			}
+			else if (command == "move")
+			{
+				int x,y;
+				cin >> x >> y;
+				grille.move(x,y);
+			}
 	}
 
 	gfx.join();

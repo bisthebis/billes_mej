@@ -1,4 +1,5 @@
 #include "Grille.h"
+#include "easylogging++.h"
 
 #include <cassert>
 
@@ -125,4 +126,20 @@ void Grille::computeRange(int j, int n)
 {
 	for (int x = j; x < j+n; ++x)
 	computeLine(x);
+}
+
+void Grille::resize(int x, int y)
+{
+	width = x;
+	height = y;
+	checked.resize(x*y);
+	result.resize(x*y);
+
+	for (int i = 0; i < x*y; ++i)
+		checked[i] = false;
+
+	synchroniserResult();
+
+	LOG(INFO) << "Successful resize";
+
 }
