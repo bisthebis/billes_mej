@@ -6,6 +6,9 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
+unsigned long serializeBool(std::vector<bool>& vec);
+std::vector<bool> deserializeBool(unsigned long src, int n);
+
 struct Grille : public sf::Drawable
 {
 	int width, height;
@@ -40,6 +43,9 @@ struct Grille : public sf::Drawable
 	void computeLine(int j);
 	void computeRange(int j, int n);
 	void resize(int x, int y);
+	bool isCorrect();
+
+	void solve();
 };
 
 #endif

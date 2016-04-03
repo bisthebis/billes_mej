@@ -33,9 +33,7 @@ int main()
 	grille.synchroniserResult();
 
 
-	std::cout << grille;
 	window.setActive(false);
-
 	std::thread gfx(runGraphicThread, std::ref(grille), std::ref(window));
 
 
@@ -70,6 +68,11 @@ int main()
 				int x,y;
 				cin >> x >> y;
 				grille.move(x,y);
+			}
+			else if (command == "solve")
+			{
+
+				grille.solve();
 			}
 	}
 

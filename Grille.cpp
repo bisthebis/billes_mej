@@ -2,6 +2,7 @@
 #include "easylogging++.h"
 
 #include <cassert>
+#include <iostream>
 
 
 
@@ -124,6 +125,7 @@ void Grille::computeLine(int j)
 
 void Grille::computeRange(int j, int n)
 {
+	synchroniserResult();
 	for (int x = j; x < j+n; ++x)
 	computeLine(x);
 }
@@ -142,4 +144,58 @@ void Grille::resize(int x, int y)
 
 	LOG(INFO) << "Successful resize";
 
+}
+
+void Grille::solve()
+{
+		if(width > height) resize(height, width);
+
+		const unsigned long n_tentatives = (1 << width);
+
+		char a;
+		for (unsigned long i = 0; i < n_tentatives; ++i)
+		{
+				auto firstLine = deserializeBool(i, width);
+				for (int n = 0; n < width*height; ++n)
+				checked[n] = false;
+				for (int n = 0; n < width; ++n)
+				checked[n] = firstLine[n];
+
+				computeRange(1, height-1);
+				if(isCorrect())
+				std::cin >> a;
+		}
+
+}
+
+bool Grille::isCorrect()
+{
+	for (bool e : result)
+		if(!e)
+		return false;
+
+	return true;
+}
+
+unsigned long serializeBool(std::vector<bool>& vec)
+{
+	unsigned long value = 0;
+	const int N = vec.size();
+	for (int i = 0; i < N; ++i)
+	{
+		value += (vec[i] << i);
+	}
+
+	return value;
+}
+std::vector<bool> deserializeBool(unsigned long src, int n)
+{
+		std::vector<bool> v(n, false);
+		for (int i = 0; i < n; ++i)
+		{
+			v[i] = (1 << i) & src;
+		}
+
+
+		return v;
 }
