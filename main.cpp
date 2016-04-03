@@ -73,6 +73,22 @@ int main()
 			{
 
 				grille.solve();
+				LOG(INFO) << "Grille résolue. Nombre de solutions : " << grille.getSolutions().size();
+			}
+			else if (command == "seed")
+			{
+					unsigned long seed;
+					cin >> seed;
+					grille.useSeed(seed);
+			}
+			else if (command == "solutions")
+			{
+				for (auto e : grille.getSolutions())
+				cout << e << endl;
+			}
+			else if (command == "save")
+			{
+				grille.saveSolutions();
 			}
 	}
 

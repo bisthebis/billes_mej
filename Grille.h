@@ -15,6 +15,8 @@ struct Grille : public sf::Drawable
 	std::vector<bool> checked;
 	mutable std::vector<bool> result;
 
+	std::vector<unsigned long> solutions;
+
 	Grille(int w = 5, int h = 5) : width(w), height(h), checked(w*h, false), result(w*h, false) {}
 	~Grille(){}
 
@@ -44,6 +46,9 @@ struct Grille : public sf::Drawable
 	void computeRange(int j, int n);
 	void resize(int x, int y);
 	bool isCorrect();
+	const std::vector<unsigned long>& getSolutions() {return solutions;}
+	void useSeed(unsigned long v);
+	void saveSolutions();
 
 	void solve();
 };

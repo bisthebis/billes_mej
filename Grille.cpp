@@ -3,6 +3,8 @@
 
 #include <cassert>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 
 
 
@@ -145,25 +147,30 @@ void Grille::resize(int x, int y)
 	LOG(INFO) << "Successful resize";
 
 }
+void Grille::useSeed(unsigned long v)
+{
+	auto firstLine = deserializeBool(v, width);
+	for (int n = 0; n < width*height; ++n)
+	checked[n] = false;
+	for (int n = 0; n < width; ++n)
+	checked[n] = firstLine[n];
 
+	computeRange(1, height-1);
+
+}
 void Grille::solve()
 {
+		solutions.resize(0);
 		if(width > height) resize(height, width);
 
 		const unsigned long n_tentatives = (1 << width);
 
-		char a;
 		for (unsigned long i = 0; i < n_tentatives; ++i)
 		{
-				auto firstLine = deserializeBool(i, width);
-				for (int n = 0; n < width*height; ++n)
-				checked[n] = false;
-				for (int n = 0; n < width; ++n)
-				checked[n] = firstLine[n];
+				useSeed(i);
 
-				computeRange(1, height-1);
 				if(isCorrect())
-				std::cin >> a;
+				solutions.push_back(i);
 		}
 
 }
@@ -198,4 +205,17 @@ std::vector<bool> deserializeBool(unsigned long src, int n)
 
 
 		return v;
+}
+
+
+void Grille::saveSolutions()
+{
+	std::ofstream file;
+	std::ostringstream name;
+	name << "Solutions/SOL_" << width << '_' << height;
+	file.open(name.str());
+
+	for (auto e : solutions)
+		file << e << std::endl;
+
 }
