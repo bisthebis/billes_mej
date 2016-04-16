@@ -10,8 +10,15 @@
 INITIALIZE_EASYLOGGINGPP
 
 std::atomic<bool> stopApp;
+struct toDo
+{
+    bool yes = false;
+    int x;
+    int y;
+};
 
-void runGraphicThread(const Grille& grille, sf::RenderWindow& window);
+toDo todo;
+void runGraphicThread(Grille& grille, sf::RenderWindow& window);
 
 int main()
 {
@@ -44,6 +51,13 @@ int main()
 			using std::cin;
 			using std::cout;
 			using std::endl;
+
+			if(todo.yes)
+			{
+                    grille.move(todo.x, todo.y);
+                    cout << todo.x << ' ' << todo.y << endl;
+                    todo.yes = false;
+			}
 
 			cin >> command;
 			if (command == "quit" || command == "q" || command== "leave" || command == "l")
@@ -98,7 +112,7 @@ int main()
 }
 
 
-void runGraphicThread(const Grille& grille, sf::RenderWindow& window)
+void runGraphicThread(Grille& grille, sf::RenderWindow& window)
 {
 		window.setActive(true);
 
@@ -111,6 +125,18 @@ void runGraphicThread(const Grille& grille, sf::RenderWindow& window)
 					stopApp = true;
 				else if (event.type == sf::Event::KeyPressed)
 					if(event.key.code == sf::Keyboard::Key::Escape) stopApp = true;
+
+                if (event.type == sf::Event::MouseButtonPressed)
+                    {
+                        auto winPos = sf::Vector2i(event.mouseButton.x, event.mouseButton.y);
+                        auto worldPos = window.mapPixelToCoords(winPos);
+                        worldPos.x /= 100;
+                        worldPos.y /= 100;
+                        grille.move(worldPos.x, worldPos.y); //CONST-Correctness :(
+                        //todo.yes = true;
+                        //todo.x = worldPos.x;
+                        //todo.y = worldPos.y;
+                    }
 			}
 
 		window.clear(sf::Color(120,120,120));

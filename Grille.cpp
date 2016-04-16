@@ -118,7 +118,7 @@ std::ostream& operator<<(std::ostream& os, const Grille& Grille)
 void Grille::computeLine(int j)
 {
 	for (int i = 0; i < width; ++i)
-	checked[i+height*j] = !getResult(i, j-1);
+	checked[i+width*j] = !getResult(i, j-1);
 
 	synchroniserResult();
 
